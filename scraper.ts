@@ -1,15 +1,24 @@
-import * as cheerio from "https://esm.sh/cheerio@1.0.0-rc.12";
+import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
+const { load } = cheerio;
+import { encodeUrl } from "https://deno.land/x/encodeurl/mod.ts";
 
-const url = 'https://example.com';
+const encodedUrl = encodeUrl('https://x.com/truthofhistory');
 
 try {
-  const res = await fetch(url);
-  const html = await res.text();
-  const $ = cheerio.load(html)  
+  const response = await fetch('https://api.scrapingant.com/v1/general?url=' + encodedUrl, {
+    method: 'GET',
+    headers: {
+        'x-api-key': 'cdb5feebffec44e1a3cda4d3d8cfefd3'
+    },
+  });
 
-  const pageHeader = $('h1').text();
+  const data = await response.json();
 
-  console.log(pageHeader)
+  const $ = load(data.content);
+
+  const pageText = $('div').text();
+
+  console.log(pageText)
 } catch(error) {
   console.log(error);
 }
