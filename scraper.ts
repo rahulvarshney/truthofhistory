@@ -1,4 +1,4 @@
-const url = 'https://x.com/truthofhistory';
+const url = 'https://example.com';
 
 try {
   const res = await fetch(url);
